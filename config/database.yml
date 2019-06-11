@@ -14,7 +14,7 @@ default: &default
   encoding: utf8
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   username: baystars
-  password: <%= Rails.application.credentials.dig(:db, :local: baystars, :pw) %>
+  password: <%= Rails.application.credentials.dig(:db, :local, :baystars, :pw) %>
   socket: /var/run/mysqld/mysqld.sock
 
 development:
