@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_12_072016) do
+ActiveRecord::Schema.define(version: 2019_06_12_154958) do
 
   create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "provider", default: "email", null: false
@@ -32,8 +32,6 @@ ActiveRecord::Schema.define(version: 2019_06_12_072016) do
     t.datetime "updated_at", null: false
     t.string "created_by"
     t.string "last_updated_by"
-    t.datetime "creatoin_date"
-    t.datetime "last_updated_date"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true
