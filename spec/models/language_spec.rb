@@ -1,6 +1,11 @@
 require 'rails_helper'
 
-RSpec.describe Lang, type: :model do
+RSpec.describe Language, type: :model do
+
+  it "has a valid factory method" do
+    expect(FactoryBot.build(:language)).to be_valid
+
+  end
   it "is valid with a language name" do
     lang = Language.new(language_name: "English")
     expect(lang).to be_valid
