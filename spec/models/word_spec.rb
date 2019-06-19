@@ -44,4 +44,11 @@ RSpec.describe Word, type: :model do
     dup_word.valid?
     expect(dup_word.errors[:meaning]).to include("has already been taken")
   end
+
+  it "is invalid with the same language between word and meaning" do
+    word = FactoryBot.build(:word)
+    word.meaning_lang_id = word.word_lang_id
+    word.valid?
+    expect(word.errors[:language]).to include("language cannot be the same")
+  end
 end

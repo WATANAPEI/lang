@@ -17,4 +17,9 @@ RSpec.describe Language, type: :model do
     expect(word_exp === lang.language_name).to_not be true
   end
 
+  it "can have many words" do
+    lang = FactoryBot.create(:language, :with_words)
+    expect(lang.words.length).to eq 5
+  end
+
 end
