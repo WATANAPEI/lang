@@ -1,5 +1,5 @@
 FactoryBot.define do
   factory :language do
-    language_name "English"
+    sequence(:language_name){|idx| "lang#{idx}"}
   end
 end
