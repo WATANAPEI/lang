@@ -4,5 +4,6 @@ FactoryBot.define do
     meaning "eat"
     association :word_lang
     association :meaning_lang
+
   end
 end

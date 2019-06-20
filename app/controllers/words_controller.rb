@@ -1,6 +1,6 @@
 class WordsController < ApplicationController
   def index
-    words = Word.order(:id)
+    words = Word.all
     render json: {status: 'SUCCESS', message: 'loaded words', data: words }
   end
 
@@ -35,11 +35,6 @@ class WordsController < ApplicationController
 
   private
   def word_params
-    params.require(:word).permit(
-      :word,
-      :meaning,
-      :word_lang_id,
-      :meaning_lang_id
-    )
+    params.require(:word).permit(:word, :meaning, :word_lang_id,:meaning_lang_id)
   end
 end
