@@ -31,7 +31,10 @@ RSpec.describe WordsController, type: :controller do
     end
 
     context "with invalid id" do
-      it "responds 404 response"
+      it "responds 404 response" do
+        get :show, params: {id: -1}
+        expect(response).to have_http_status "404"
+      end
     end
   end
 
