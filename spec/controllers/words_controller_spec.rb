@@ -67,4 +67,19 @@ RSpec.describe WordsController, type: :controller do
       it "responds error message"
     end
   end
+
+  describe "#destroy" do
+    context "with proper param" do
+      it "deletes a word" do
+        word = FactoryBot.create(:word)
+        expect {
+          delete :destroy, params: {id: word.id}
+        }.to change(Word, :count).by(-1)
+      end
+    end
+
+    context "with invalid param" do
+      it "returns error"
+    end
+  end
 end
