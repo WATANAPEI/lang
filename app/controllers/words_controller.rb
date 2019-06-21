@@ -21,15 +21,15 @@ class WordsController < ApplicationController
   def destroy
     word = Word.find(params[:id])
     word.destroy
-    render json: { status: 'SUCCESS', message: 'deleted the word', data: word }
+    render json: { status: 'SUCCESS', message: 'the word is  deleted', data: word }
   end
 
   def update
     word = Word.find(params[:id])
     if word.update(word_params)
-      render json: { status: 'SUCCESS', message: 'updated the word', data: word }
+      render json: { status: 'SUCCESS', message: 'the word is updated', data: word }
     else
-      render json: {status: 'ERROR', message: 'word not updated', data: word.errors}
+      render json: {status: 'ERROR', message: 'the word is not updated', data: word.errors}
     end
   end
 
