@@ -114,6 +114,11 @@ RSpec.describe WordsController, type: :controller do
           delete :destroy, params: {id: word.id}
         }.to change(Word, :count).by(-1)
       end
+      it "responds a 200 status" do
+        word = FactoryBot.create(:word)
+        delete :destroy, params: {id: word.id}
+        expect(response).to have_http_status "200"
+      end
     end
 
     context "with invalid param" do
