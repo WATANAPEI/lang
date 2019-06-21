@@ -40,12 +40,19 @@ RSpec.describe WordsController, type: :controller do
 
   describe "#create" do
     context "with proper params" do
+      before do
+        @word = FactoryBot.build(:word)
+        @word_params = @word.attributes.symbolize_keys.slice(:word, :meaning, :word_lang_id, :meaning_lang_id)
+      end
       it "adds a word" do
-        word = FactoryBot.build(:word)
-        word_params = word.attributes.symbolize_keys.slice(:word, :meaning, :word_lang_id, :meaning_lang_id)
         expect {
-          post :create, params: {word: word_params}
+          post :create, params: {word: @word_params}
         }.to change(Word, :count).by(1)
+      end
+
+      it "responds a 200 status" do
+        post :create, params: {word: @word_params}
+        expect(response).to have_http_status "200"
       end
     end
     context "with invalid params" do
