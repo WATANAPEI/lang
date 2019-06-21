@@ -3,15 +3,14 @@ require 'rails_helper'
 RSpec.describe "WordsApi", type: :request do
   it "loads a word" do
     word = FactoryBot.create(:word)
-    get words_path, params: {id: word.id}
+    get word_path(word)
     expect(response).to have_http_status "200"
     json = JSON.parse(response.body, symbolize_names: true)
-    loaded_data_array = json[:data]
-    loaded_data = loaded_data_array.first
+    loaded_data = json[:data]
     # the number of feilds of body
     expect(json.length).to eq 3
     # the number of loaded data 
-    expect(loaded_data_array.length).to eq 1
+    expect(loaded_data).to be_truthy
     # check the content
     expect(loaded_data[:word]).to eq word.word
   end
@@ -46,6 +45,7 @@ RSpec.describe "WordsApi", type: :request do
   end
 
   it "registers words" do
+    #TODO: change test below to check array allowance
     word_params = []
     5.times do
       word = FactoryBot.build(:word)
@@ -59,7 +59,14 @@ RSpec.describe "WordsApi", type: :request do
     end
   end
   
-  it "updates a word"
+  it "updates a word" do
+    word = FactoryBot.create(:word, meaning: "original_meaning")
+    word_params = {meaning: "changed_meaning"}
+      #FactoryBot.build(:word).attributes.symbolize_keys.slice(:meaning)
+    patch word_path(word), params: {word: word_params}
+    expect(response).to have_http_status "200"
+    expect(Word.find(word.id).meaning).to eq "changed_meaning"
+  end
 
   it "deletes a word"
 end
