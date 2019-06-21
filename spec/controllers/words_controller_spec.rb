@@ -49,7 +49,21 @@ RSpec.describe WordsController, type: :controller do
       end
     end
     context "with invalid params" do
-      it "responds error message"
+      before do
+        @word = FactoryBot.build(:word)
+        # slip meaning_lang_id
+        @word_params = @word.attributes.symbolize_keys.slice(:word, :meaning, :word_lang_id) 
+      end
+      it "responds a 200 status" do
+        post :create, params: {word: @word_params}
+        expect(response).to have_http_status "200"
+      end
+      it "does not save a word" do
+        post :create, params: {word: @word_params}
+        expect {
+          post :create, params: {word: @word_params}
+        }.to change(Word, :count).by(0)
+      end
     end
   end
 

@@ -12,9 +12,9 @@ class WordsController < ApplicationController
   def create
     word = Word.new(word_params)
     if word.save
-      render json: { status: 'SUCCESS', message: 'loaded the word', data: word }
+      render json: { status: 'SUCCESS', message: 'the word saved.', data: word }
     else
-      render json: { status: 'ERROR', message: 'word not saved', data: word.errors }
+      render json: { status: 'ERROR', message: 'the word was not saved', data: word.errors }
     end
   end
 
