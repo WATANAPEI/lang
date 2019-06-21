@@ -1,20 +1,20 @@
 class WordsController < ApplicationController
   def index
     words = Word.all
-    render json: {status: 'SUCCESS', message: 'loaded words', data: words }
+    render json: {status: 'SUCCESS', message: 'words are loaded', data: words }
   end
 
   def show
     word = Word.find(params[:id])
-    render json: {status: 'SUCCESS', message: 'loaded the word', data: word }
+    render json: {status: 'SUCCESS', message: 'the word is loaded', data: word }
   end
 
   def create
     word = Word.new(word_params)
     if word.save
-      render json: { status: 'SUCCESS', message: 'the word saved.', data: word }
+      render json: { status: 'SUCCESS', message: 'the word is saved.', data: word }
     else
-      render json: { status: 'ERROR', message: 'the word was not saved', data: word.errors }
+      render json: { status: 'ERROR', message: 'the word is not saved', data: word.errors }
     end
   end
 

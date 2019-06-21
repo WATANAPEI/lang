@@ -1,4 +1,4 @@
-class LanguageController < ApplicationController
+class LanguagesController < ApplicationController
   def index
     languages = Language.all
     render json: {status: "SUCCESS", message: "loaded languages", data: languages }
@@ -31,5 +31,13 @@ class LanguageController < ApplicationController
     language = Language.find(params[:id])
     language.destroy
     render json: { status: 'SUCCESS', message: 'the language is deleted', data: language }
+  end
+
+  private
+
+  def language_params
+    params.require(:language).permit(
+      :language_name
+    )
   end
 end

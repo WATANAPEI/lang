@@ -101,7 +101,7 @@ RSpec.describe WordsController, type: :controller do
 
       it "does not update a word" do
         patch :update, params: {id: -1 , word: @word_params }
-        expect(@saved_word.meaning).to eq "original_meaning"
+        expect(@saved_word.reload.meaning).to eq "original_meaning"
       end
     end
   end
