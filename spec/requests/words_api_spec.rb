@@ -65,8 +65,17 @@ RSpec.describe "WordsApi", type: :request do
       #FactoryBot.build(:word).attributes.symbolize_keys.slice(:meaning)
     patch word_path(word), params: {word: word_params}
     expect(response).to have_http_status "200"
-    expect(Word.find(word.id).meaning).to eq "changed_meaning"
+    expect(word.reload.meaning).to eq "changed_meaning"
   end
 
-  it "deletes a word"
+  it "deletes a word" do
+    word = FactoryBot.create(:word)
+    expect {
+      delete word_path(word)
+    }.to change(Word, :count).by(-1)
+    expect(response).to have_http_status "200"
+    json = JSON.parse(response.body, symbolize_names: true)
+    # check the delete word id
+    expect(word.id).to eq json[:data][:id]
+  end
 end
