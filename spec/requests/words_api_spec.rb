@@ -36,7 +36,28 @@ RSpec.describe "WordsApi", type: :request do
     end
   end
 
-  it "registers words"
+  it "registers a word" do
+    word = FactoryBot.build(:word)
+    word_params = word.attributes.symbolize_keys.slice(:word, :meaning, :word_lang_id, :meaning_lang_id)
+    expect {
+      post words_path, params: {word: word_params}
+    }.to change(Word, :count).by(1)
+    expect(Word.last.word).to eq word_params[:word]
+  end
+
+  it "registers words" do
+    word_params = []
+    5.times do
+      word = FactoryBot.build(:word)
+      word_params << word.attributes.symbolize_keys.slice(:word,:meaning,:word_lang_id, :meaning_lang_id)
+    end
+    word_params.each do |word_param| 
+      expect {
+        post words_path, params: { word: word_param}
+      }.to change(Word, :count).by(1)
+      expect(response).to have_http_status "200"
+    end
+  end
   
   it "updates a word"
 

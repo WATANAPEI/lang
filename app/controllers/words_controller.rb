@@ -34,7 +34,9 @@ class WordsController < ApplicationController
   end
 
   private
+  #TODO: make possible to catch array of hash
   def word_params
     params.require(:word).permit(:word, :meaning, :word_lang_id,:meaning_lang_id)
+#   params.require(:word).map( |u| u.permit(:word, :meaning, :word_lang_id, :meaning_lang_id) }
   end
 end
