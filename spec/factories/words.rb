@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :word do
-    word "lya"
-    meaning "eat"
+    sequence(:word) {|idx| "lya#{idx}"}
+    sequence(:meaning) {|idx| "eat#{idx}"}
     association :word_lang
     association :meaning_lang
 
