@@ -47,6 +47,10 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
   # ref: everyday rails
   gem 'spring-commands-rspec'
+  # ref: https://qiita.com/HAZI/items/a3d7a225f94f8354e530
+  gem 'yard'
+  # neovim
+  gem 'neovim'
 end
 
 

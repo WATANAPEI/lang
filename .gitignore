@@ -23,3 +23,6 @@
 /config/master.key
 
 vendor
+
+/doc/*
+!/doc/.keep
