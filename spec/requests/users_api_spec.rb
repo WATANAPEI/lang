@@ -86,10 +86,27 @@ RSpec.describe "UsersApi", type: :request do
       expect(response.has_header?('client')).to eq(false)
       expect(response.has_header?('uid')).to eq(false)
     end
-    puts "response.headers: #{response.headers.inspect}"
 
   end
-  it "makes it possible for a user to change their passowrd"
+
+  it "makes it possible for a user to change their passowrd" do
+    user_param = {email: "change_password@example.com", password: "change_password_12345"}
+    saved_user = FactoryBot.create(:user, user_param)
+
+    #login
+    post user_session_path, params: user_param
+    expect(response).to have_http_status "200"
+    auth_params = get_auth_params_from_login_response_headers(response)
+
+    #change password
+    saved_encrypted_cpassword = saved_user.encrypted_password
+    changed_password = "changed_password"
+    patch user_password_path, params: { password: changed_password, password_confirmation: changed_password}, headers: auth_params
+    aggregate_failures do
+      expect(response).to have_http_status "200"
+      expect(saved_user.reload.encrypted_password).to_not eq saved_encrypted_cpassword
+    end
+  end
 
   # ref: https://devise-token-auth.gitbook.io/devise-token-auth/usage/testing
 	def get_auth_params_from_login_response_headers(response)
