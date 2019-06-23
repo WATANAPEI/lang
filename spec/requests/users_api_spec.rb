@@ -20,10 +20,6 @@ RSpec.describe "UsersApi", type: :request do
   end
 
   it "deletes a user" do
-    # to delete a user, steps below are necessary:
-    # 1. sign-up
-    # 2. sign-in
-    # 3. delete a user
     user_params = FactoryBot.attributes_for(:user)
     # 1. sign-up
     expect {
@@ -32,11 +28,10 @@ RSpec.describe "UsersApi", type: :request do
     saved_user = User.last
 #   puts "saved_user: #{saved_user.inspect}"
 #   puts "request json: #{JSON.parse(response, symbolize_names: true)}"
-    # 2.sign-in by helper method (./support/request_spec_helper.rb)
-    sign_in saved_user
-
+    # 2.sign-in automatically
+#   sign_in saved_user
 #   puts "body(json): #{JSON.parse(response.body, symbolize_names: true)}"
-#   puts "body class: #{request.body}"
+#   puts "body class: #{response.body}"
 #   puts "header: #{response.headers.inspect}"
 #   puts "headers class: #{response.headers.class}"
 
@@ -49,13 +44,52 @@ RSpec.describe "UsersApi", type: :request do
       }.to change(User, :count).by(-1)
       expect(response).to have_http_status "200"
     end
+  end
+
+  it "edits a user" do
+    params = {email: "edit@example.com", password: "edit_password_123"}
+    saved_user = FactoryBot.create(:user, params)
+    # sing-in
+    post user_session_path, params: params
+    expect(response).to have_http_status "200"
+
+    auth_params = get_auth_params_from_login_response_headers(response)
+    # edit a user
+    editted_params = { email: "editted@example.com" }
+    patch user_registration_path, headers: auth_params, params: editted_params
+#   puts "response: #{response.body}"
+    expect(response).to have_http_status "200"
+    expect(saved_user.reload.email).to eq "editted@example.com"
+  end
+  it "shows a user account"
+  it "makes it possible for a user to sign in and sign out" do
+    params = { email: "login@example.com", password: "login_test_123"}
+    saved_user = FactoryBot.create(:user, params)
+    post user_session_path, params: params
+#   puts "response.headers: #{response.headers.inspect}"
+#   puts "body(json): #{JSON.parse(response.body, symbolize_names: true)}"
+    aggregate_failures do
+      expect(response).to have_http_status "200"
+      expect(response.has_header?('access-token')).to eq(true)
+      expect(response.has_header?('token-type')).to eq(true)
+      expect(response.has_header?('client')).to eq(true)
+      expect(response.has_header?('uid')).to eq(true)
+    end
+    auth_params = get_auth_params_from_login_response_headers(response)
+
+    # sign-out
+    delete destroy_user_session_path, headers: auth_params
+    aggregate_failures do
+      expect(response).to have_http_status "200"
+      expect(response.has_header?('access-token')).to eq(false)
+      expect(response.has_header?('token-type')).to eq(false)
+      expect(response.has_header?('client')).to eq(false)
+      expect(response.has_header?('uid')).to eq(false)
+    end
+    puts "response.headers: #{response.headers.inspect}"
 
   end
-  it "edits a user"
-  it "shows a user account"
-  it "makes it possible for a user to sign in"
-  it "makes it possible for a user to sign oout"
-  it "makes is possible for a user to change their passowrd"
+  it "makes it possible for a user to change their passowrd"
 
   # ref: https://devise-token-auth.gitbook.io/devise-token-auth/usage/testing
 	def get_auth_params_from_login_response_headers(response)
