@@ -61,7 +61,35 @@ RSpec.describe "UsersApi", type: :request do
     expect(response).to have_http_status "200"
     expect(saved_user.reload.email).to eq "editted@example.com"
   end
-  it "shows a user account"
+
+  it "shows a user account" do
+    param = {email: "show@example.com", password: "show_user_123"}
+    saved_user = FactoryBot.create(:user, param)
+
+    #login
+    post user_session_path, params: param
+    expect(response).to have_http_status "200"
+    auth_params = get_auth_params_from_login_response_headers(response)
+
+    #get user information
+#   puts "auth_user_path: #{auth_user_path}"
+#   puts "user_registration_path: #{user_registration_path}"
+    get auth_user_path, headers: auth_params
+    json = JSON.parse(response.body, symbolize_names: true)
+    loaded_data = json[:data]
+    expect(response).to have_http_status "200"
+    expect(loaded_data[:id]).to eq saved_user.id
+#   puts "loaded_data: #{loaded_data.inspect}"
+
+  end
+
+  it "does not return user data unless login" do
+    get auth_user_path
+    expect(response).to have_http_status "401"
+#   puts "response.body: #{response.body}"
+#   puts "response.headers: #{response.headers.inspect}"
+
+  end
   it "makes it possible for a user to sign in and sign out" do
     params = { email: "login@example.com", password: "login_test_123"}
     saved_user = FactoryBot.create(:user, params)
