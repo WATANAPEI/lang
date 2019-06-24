@@ -26,3 +26,6 @@ vendor
 
 /doc/*
 !/doc/.keep
+
+# add ignores for frontend dev
+node_modules
