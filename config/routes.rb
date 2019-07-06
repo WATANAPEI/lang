@@ -4,7 +4,9 @@ Rails.application.routes.draw do
     registrations: 'auth/registrations'
   }
 
-  resources :words
+  resources :words do
+    get "count", on: :collection
+  end
   resources :languages
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 

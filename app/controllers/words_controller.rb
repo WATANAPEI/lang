@@ -1,42 +1,52 @@
+# frozen_string_literal: true
+
 class WordsController < ApplicationController
+  include JsonFormat
+
   def index
     words = Word.all
-    render json: {status: 'SUCCESS', message: 'words are loaded', data: words }
+    json_format('SUCCES', 'words are loaded', words)
   end
 
   def show
     word = Word.find(params[:id])
-    render json: {status: 'SUCCESS', message: 'the word is loaded', data: word }
+    json_format('SUCCESS', 'the word is loaded', word)
   end
 
   def create
     word = Word.new(word_params)
     if word.save
-      render json: { status: 'SUCCESS', message: 'the word is saved.', data: word }
+      json_format('SUCCESS', 'the word is saved', word)
     else
-      render json: { status: 'ERROR', message: 'the word is not saved', data: word.errors }
+      json_format('ERROR', 'the word is not saved', word.errors)
     end
   end
 
   def destroy
     word = Word.find(params[:id])
     word.destroy
-    render json: { status: 'SUCCESS', message: 'the word is  deleted', data: word }
+    json_format('SUCCESS', 'the word is deleted', word)
   end
 
   def update
     word = Word.find(params[:id])
     if word.update(word_params)
-      render json: { status: 'SUCCESS', message: 'the word is updated', data: word }
+      json_format('SUCCESS', 'the word is updated', word)
     else
-      render json: {status: 'ERROR', message: 'the word is not updated', data: word.errors}
+      json_format('ERROR', 'the word is not updated', word.errors)
     end
   end
 
+  def count
+    num_words = Word.count
+    json_format('SUCCESS', 'the number of word is loaded', num_words)
+  end
+
   private
-  #TODO: make possible to catch array of hash
+  # TODO: make possible to catch array of hash
   def word_params
     params.require(:word).permit(:word, :meaning, :word_lang_id,:meaning_lang_id)
-#   params.require(:word).map( |u| u.permit(:word, :meaning, :word_lang_id, :meaning_lang_id) }
+    # params.require(:word).map( |u| u.permit(:word, :meaning, :word_lang_id, :meaning_lang_id) }
   end
+
 end
