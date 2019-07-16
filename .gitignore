@@ -27,3 +27,5 @@ vendor
 /doc/*
 !/doc/.keep
 
+# Ignore env file
+.env
