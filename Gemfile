@@ -48,7 +48,7 @@ group :development do
   # ref: everyday rails
   gem 'spring-commands-rspec'
   # ref: https://qiita.com/HAZI/items/a3d7a225f94f8354e530
-  gem 'yard'
+  gem 'yard', '~> 0.9.20'
   # neovim
   gem 'neovim'
 end
