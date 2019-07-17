@@ -17,4 +17,4 @@ RUN bundle install --without test development
 COPY . .
 
 EXPOSE 3000
-CMD ["rails", "server"]
+CMD ["bundle", "exec", "rails", "server", "-e", "production"]
