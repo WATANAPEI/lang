@@ -9,6 +9,8 @@ services:
             MYSQL_PASSWORD: ${MYSQL_PASSWORD}
         ports:
             - "3306:3306"
+        networks:
+            - mynet
 
     web:
         build: .
@@ -17,3 +19,5 @@ services:
             - "3000:3000"
         links:
             - db
+        networks:
+            - mynet
