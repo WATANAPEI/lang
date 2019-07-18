@@ -21,3 +21,6 @@ services:
             - db
         networks:
             - mynet
+networks:
+    mynet:
+        external: true
