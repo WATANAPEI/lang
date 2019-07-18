@@ -50,5 +50,6 @@ test:
 production:
   <<: *default
   database: lang_production
+  host: db
   username: wpei
   password: <%= Rails.application.credentials.dig(:db, :prod, :wpei, :pw) %>
