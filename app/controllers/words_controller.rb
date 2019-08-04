@@ -42,6 +42,15 @@ class WordsController < ApplicationController
     json_format('SUCCESS', 'the number of word is loaded', num_words)
   end
 
+  def search
+    word = Word.search(params[:q])
+    if word.exists?
+      json_format('SUCCESS', 'query was executed', word)
+    else
+      json_format('ERROR', 'query has not been executed', word)
+    end
+  end
+
   private
   # TODO: make possible to catch array of hash
   def word_params
