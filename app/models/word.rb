@@ -8,21 +8,26 @@ class Word < ApplicationRecord
   validate :language_cannot_be_the_same
 
   class << self
-    def search(query)
-      if query.present?
-        query_hash = Rack::Utils.parse_nested_query(query)
-        if query_hash.except('word', 'meaning').nil?
-          if query_hash['word'].exists?
-            word = where('word LIKE ?', `%#{query_hash['word']}%`)
-          elsif query_hash['meaning'].exists?
-            word = where('meaning LIKE ?', `%#{query_hash['meaning']}%`)
+    def search(params)
+      if params.present?
+        # query_hash = Rack::Utils.parse_nested_query(query)
+        valid_query = params.slice(:word, :meaning)
+        puts "params: #{params.inspect}"
+        puts "valid_query: #{valid_query}"
+        puts "except check: #{valid_query.except('word', 'meaning')}"
+        if !valid_query.blank? && valid_query.except('word', 'meaning').blank?
+          if valid_query['word'].present?
+            word = where('word LIKE ?', "%#{valid_query['word']}%")
+          elsif valid_query['meaning'].present?
+            word = where('meaning LIKE ?', "%#{valid_query['meaning']}%")
           end
-          word = rel.order('id')
+          word = word.order(:id)
         else
-          word.errors.add(:query, 'invalid query exists')
+          word = Word.new.errors.add(:query, 'invalid query exists')
+          # puts "error: #{word.inspect}"
         end
       else
-        word.errors.add(:query, 'query does not exist')
+        word = Word.new.errors.add(:query, 'query does not exist')
       end
       word
     end

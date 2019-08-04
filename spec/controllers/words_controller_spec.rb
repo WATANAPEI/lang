@@ -148,4 +148,29 @@ RSpec.describe WordsController, type: :controller do
       expect(response).to be_successful
     end
   end
+
+  describe '#search' do
+    context 'with valid params' do
+      it 'returns word which has a word corresponding to query' do
+        word = FactoryBot.create(:word)
+        # puts "word: #{word.inspect}"
+        # puts "word.word: #{word.word}"
+        get :search, params: { word: word.word }
+        puts "response: #{response.body}"
+        expect(response).to be_successful
+        expect(response).to have_http_status '200'
+      end
+    end
+    context 'with invalid params' do
+      it 'returns error message' do
+        word = FactoryBot.create(:word)
+        # puts "word: #{word.inspect}"
+        # puts "word.word: #{word.word}"
+        get :search, params: { wrong_param: word.meaning }
+        puts "response: #{response.body}"
+        expect(response).to be_successful
+        expect(response).to have_http_status '200'
+      end
+    end
+  end
 end

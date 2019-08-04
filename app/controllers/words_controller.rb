@@ -43,8 +43,8 @@ class WordsController < ApplicationController
   end
 
   def search
-    word = Word.search(params[:q])
-    if word.exists?
+    word = Word.search(params)
+    if word.present?
       json_format('SUCCESS', 'query was executed', word)
     else
       json_format('ERROR', 'query has not been executed', word)

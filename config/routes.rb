@@ -8,6 +8,7 @@ Rails.application.routes.draw do
     get "count", on: :collection
     get "search", on: :collection
   end
+  # get 'words/search', to: 'words#search'
   resources :languages
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
