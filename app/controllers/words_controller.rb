@@ -4,6 +4,8 @@ class WordsController < ApplicationController
   include JsonFormat
 
   def index
+    raise 'error' if !request.query_parameters.blank?
+    # redirect_to index if !request.query_parameters.blank?
     words = Word.all
     json_format('SUCCES', 'words are loaded', words)
   end

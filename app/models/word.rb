@@ -1,5 +1,5 @@
 class Word < ApplicationRecord
-  validates :word, presence: true, uniqueness: { scope: :word_lang_id }
+  validates :word, presence: true, uniqueness: { scope: :word_lang_id, case_sensitive: false }
   validates :meaning, presence: true, uniqueness: { scope: :meaning_lang_id }
 
   belongs_to :word_lang, class_name: 'Language', foreign_key: 'word_lang_id'
@@ -17,9 +17,9 @@ class Word < ApplicationRecord
         puts "except check: #{valid_query.except('word', 'meaning')}"
         if !valid_query.blank? && valid_query.except('word', 'meaning').blank?
           if valid_query['word'].present?
-            word = where('word LIKE ?', "%#{valid_query['word']}%")
+            word = where('word LIKE BINARY ?', "%#{valid_query['word']}%")
           elsif valid_query['meaning'].present?
-            word = where('meaning LIKE ?', "%#{valid_query['meaning']}%")
+            word = where('meaning LIKE BINARY ?', "%#{valid_query['meaning']}%")
           end
           word = word.order(:id)
         else
