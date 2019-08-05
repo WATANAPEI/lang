@@ -92,4 +92,34 @@ RSpec.describe 'WordsApi', type: :request do
     # check the number of words
     expect(json[:data]).to eq 10
   end
+
+  it 'returns inquired words' do
+    word_array = []
+    10.times do
+      word_array << FactoryBot.create(:word)
+    end
+    get search_words_path, params: {word: word_array[0].word}
+    expect(response).to have_http_status '200'
+    json = JSON.parse(response.body, symbolize_names: true)
+    loaded_data = json[:data]
+    # the number of loaded data
+    expect(loaded_data).to be_truthy
+    # check the content
+    expect(loaded_data[0][:word]).to eq word_array[0].word
+    expect(loaded_data[0][:meaning]).to eq word_array[0].meaning
+    get search_words_path, params: { meaning: word_array[1].meaning}
+    expect(response).to have_http_status '200'
+    json = JSON.parse(response.body, symbolize_names: true)
+    loaded_data = json[:data]
+    # the number of loaded data
+    expect(loaded_data).to be_truthy
+    # check the content
+    expect(loaded_data[0][:word]).to eq word_array[1].word
+    expect(loaded_data[0][:meaning]).to eq word_array[1].meaning
+    get search_words_path, params: {word: "lya"}
+    json = JSON.parse(response.body, symbolize_names: true)
+    loaded_data = json[:data]
+    # the number of loaded data
+    expect(loaded_data.length).to eq 10
+  end
 end
