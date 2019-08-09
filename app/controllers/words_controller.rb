@@ -12,7 +12,9 @@ class WordsController < ApplicationController
 
   def show
     word = Word.find(params[:id])
-    json_format('SUCCESS', 'the word is loaded', word)
+    # translate to array with single element to unify index method
+    words = [word]
+    json_format('SUCCESS', 'the word is loaded', words)
   end
 
   def create

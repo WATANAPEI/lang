@@ -5,16 +5,20 @@ require 'rails_helper'
 RSpec.describe 'WordsApi', type: :request do
   it 'loads a word' do
     word = FactoryBot.create(:word)
-    get word_path(word)
+    words = [word]
+    get word_path(words)
     expect(response).to have_http_status '200'
     json = JSON.parse(response.body, symbolize_names: true)
-    loaded_data = json[:data]
     # the number of feilds of body
     expect(json.length).to eq 3
+    loaded_data_array = json[:data]
     # the number of loaded data
-    expect(loaded_data).to be_truthy
+    expect(loaded_data_array.length).to eq 1
+    # expect(loaded_data).to be_truthy
     # check the content
-    expect(loaded_data[:word]).to eq word.word
+    loaded_data_array.zip(words).each do |data, word|
+      expect(data[:word]).to eq word.word
+    end
   end
 
   it 'loads all words' do
