@@ -28,6 +28,8 @@ gem 'rack-cors'
 
 gem 'devise'
 
+gem 'draper'
+
 gem 'devise-i18n'
 gem 'rails-i18n'
 # add listen gem to the production env to use ActiveSupport
@@ -43,6 +45,7 @@ group :development, :test do
 # RSpec
   gem 'rspec-rails', '~>3.6.0'
   gem 'factory_bot_rails', '~> 4.10.0'
+  gem 'database_cleaner'
 end
 
 group :development do

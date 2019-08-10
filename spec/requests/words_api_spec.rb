@@ -3,6 +3,9 @@
 require 'rails_helper'
 
 RSpec.describe 'WordsApi', type: :request do
+  after :example do
+
+  end
   it 'loads a word' do
     word = FactoryBot.create(:word)
     words = [word]
