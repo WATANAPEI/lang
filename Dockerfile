@@ -13,7 +13,7 @@ ENV BUNDLER_VERSION=2.0.2
 WORKDIR $HOME/lang
 
 COPY Gemfile ./
-RUN bundle install --path vendor/cache --without test development
+RUN bundle install --path vendor/cache
 COPY . .
 
 EXPOSE 3000
